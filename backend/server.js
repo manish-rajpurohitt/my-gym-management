@@ -16,6 +16,8 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use('/api/admin/auth', require('./routes/admin/auth'));
+app.use('/api/admin/members', require('./routes/admin/members'));
+
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });

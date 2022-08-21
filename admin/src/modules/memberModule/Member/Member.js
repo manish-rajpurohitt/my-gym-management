@@ -21,11 +21,14 @@ const Member = () => {
     retrieveMembers()
   }, []);
 
+  React.useEffect(()=>{
+    getAll();
+  }, []);
 
   const getAll = () => {
-    HTTPService.getAll()
+    HTTPService.getAllMembers()
       .then(response => {
-        setMembers(response.data);
+        setMembers(response.data.members);
       })
       .catch(e => {
         console.log(e);
@@ -41,7 +44,6 @@ const Member = () => {
 
       });
   }
-
 
 
   const retrieveMembers = () => {
@@ -96,11 +98,11 @@ const Member = () => {
 
                     {members.map(item =>
                       <tr>
-                        <td> {item.first_name}</td>
-                        <td>{item.start_date}</td>
-                        <td>{item.end_date}</td>
-                        <td>{item.type}</td>
-                        <td><span class="badge badge-success">{item.coach}</span></td>
+                        <td> {item.firstName}</td>
+                        <td>{new Date(item.startDate).toDateString()}</td>
+                        <td>{new Date(item.endDate).toDateString()}</td>
+                        <td>{item.membershipType}</td>
+                        <td><span class="badge badge-success">{item.trainer}</span></td>
                         <td>
                           <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#edit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                           <button onClick={e => remove(e, members.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>

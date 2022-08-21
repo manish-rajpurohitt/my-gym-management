@@ -10,7 +10,16 @@ const get = id => {
 };
 
 const create = data => {
-    return http.post(`${BASE_URL}/tutorials`, data);
+
+    
+    data.startDate = new Date(data.startDate)
+    data.endDate= new Date(data.endDate)
+    data.dob= new Date(data.dob)
+    console.log(data)
+
+    return http.post(`${BASE_URL}/api/admin/members/addMember`, data, {
+        "authorization": "Bearer "+ sessionStorage.getItem("authtoken")
+    });
 };
 
 const update = (id, data) => {
@@ -29,6 +38,22 @@ const findByTitle = title => {
     return http.get(`${BASE_URL}/tutorials?title=${title}`);
 };
 
+const getAllMembers = () =>{
+    return http.get(`${BASE_URL}/api/admin/members/getAllMembers`, {
+        headers:{
+            "authorization": "Bearer "+sessionStorage.getItem("authtoken")
+        }
+    });
+}
+
+const getAllSubscribedMembers = () =>{
+    return http.get(`${BASE_URL}/api/admin/members/getAllSubscribedMembers`, {
+        headers:{
+            "authorization": "Bearer "+sessionStorage.getItem("authtoken")
+        }
+    });
+}
+
 export default {
     getAll,
     get,
@@ -36,5 +61,7 @@ export default {
     update,
     remove,
     removeAll,
-    findByTitle
+    findByTitle,
+    getAllMembers,
+    getAllSubscribedMembers
 };

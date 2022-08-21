@@ -3,13 +3,22 @@ import PropTypes from 'prop-types';
 import './DashBoard.css';
 import { drawChart } from './../../../libraries/chart/chart';
 import Member from './../../memberModule/Member/Member';
+import HTTPService from '../../../main/services/HTTPService';
 
 const DashBoard = () => {
 
+  const [members, setMembers] = React.useState([]);
+
   useEffect(() => {
     // Runs ONCE after initial rendering
-    drawChart()
-
+    drawChart();
+    let fetchMembers = async () => {
+      let mem = await HTTPService.getAllMembers();
+      console.log(mem.data.members)
+      setMembers(mem.data.members);
+    }
+    fetchMembers();
+    
   }, []);
 
   return (
@@ -35,7 +44,7 @@ const DashBoard = () => {
                         <div className="col-7 col-md-8">
                           <div className="numbers">
                             <p className="card-category">Members</p>
-                            <p className="card-title">3</p><p>
+                            <p className="card-title">{members.length}</p><p>
                             </p></div>
                         </div>
                       </div>
@@ -54,8 +63,8 @@ const DashBoard = () => {
                         </div>
                         <div className="col-7 col-md-8">
                           <div className="numbers">
-                            <p className="card-category">Reservations</p>
-                            <p className="card-title">23</p><p>
+                            <p className="card-category">Subscribed Members</p>
+                            <p className="card-title">{(members.filter(mem=>{return mem.isSubscribed === true})).length }</p><p>
                             </p></div>
                         </div>
                       </div>
